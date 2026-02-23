@@ -1,19 +1,22 @@
-import java.util.Stack;
-
 class Solution {
     public int[] dailyTemperatures(int[] temperatures) {
-        Stack<Integer> warm = new Stack<>();
-        int n = temperatures.length;
-        int[] answer = new int[n];
-        
-        for (int i = 0; i < n; i++) {
-            while (!warm.isEmpty() && temperatures[i] > temperatures[warm.peek()]) {
-                int index = warm.pop();
-                answer[index] = i - index;
-            }
-            warm.push(i);
+      int n = temperatures.length;
+      Stack<Integer> st = new Stack<>();
+      int [] ans = new int[n];
+      ans[n-1] = 0;
+      st.push(n-1);
+      for(int i= n-2; i>= 0; i--){
+        while(!st.isEmpty() && temperatures[st.peek()] <= temperatures[i]){
+            st.pop();
         }
-        return answer;
+        if(st.isEmpty()){
+            ans[i] = 0;
+        }
+        else{
+            ans[i] = st.peek() - i;
+        }
+        st.push(i);
+      }  
+      return ans;
     }
 }
-
