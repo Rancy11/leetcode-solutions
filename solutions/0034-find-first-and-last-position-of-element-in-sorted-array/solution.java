@@ -1,27 +1,44 @@
 class Solution {
-    public int[] searchRange(int[] nums, int target) {
-        int ans[] = new int[2];
-        ans[0] = Search(nums, target, true);
-        ans[1] = Search(nums, target, false);
-        return ans;
-    }
-    public int Search(int[] nums, int target, boolean findFirst){
-        int left = 0, right = nums.length-1;
-        int ans = -1;
-        while(left <= right){
-            int mid = (left+right)/2;
-            if(nums[mid] == target){
-                ans = mid;
-                if(findFirst) right = mid-1;
-                else left = mid+1;
+    private void firstPos(int[]nums, int target, int[] ans){
+        int low = 0, high = nums.length -1;
+        int res = -1;
+        while(low<=high){
+            int mid = low+(high - low) /2;
+            if(nums[mid] < target){
+                low = mid+1;
             }
-            else if(nums[mid]<target){
-                left = mid+1;
+            else if(nums[mid] > target){
+                high = mid -1;
             }
             else{
-                right = mid-1;
+                res = mid;
+                high = mid - 1;
             }
         }
+        ans[0] = res;
+    }
+    private void lastPos(int[]nums, int target, int[] ans){
+        int low = 0, high = nums.length -1;
+        int res = -1;
+        while(low<=high){
+            int mid = low + (high - low) /2;
+            if(nums[mid] < target){
+                low = mid+1;
+            }
+            else if(nums[mid] > target){
+                high = mid -1;
+            }
+            else{
+                res = mid;
+                low = mid + 1;
+            }
+        }
+        ans[1] = res;
+    }
+    public int[] searchRange(int[] nums, int target) {
+        int ans[] = {-1, -1};
+        firstPos(nums, target, ans);
+        lastPos(nums, target, ans);
         return ans;
     }
 }
